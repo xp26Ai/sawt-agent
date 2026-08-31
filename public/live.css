@@ -1,0 +1,123 @@
+.live-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
+@media (max-width: 1020px) { .live-grid { grid-template-columns: 1fr; } }
+
+.pill {
+  padding: 6px 14px; border-radius: 99px; font-size: 12.5px; font-weight: 600;
+  background: var(--card); border: 1px solid var(--line); color: var(--tx2);
+}
+.pill.live { border-color: var(--ok); color: var(--ok); background: rgba(63,191,127,.1); }
+.pill.busy { border-color: var(--warn); color: var(--warn); background: rgba(240,180,41,.1); }
+.pill.dead { border-color: var(--bad); color: var(--bad); }
+
+label.block { display: block; margin-top: 13px; }
+label.block > span { display: block; font-size: 12.5px; color: var(--tx2); font-weight: 500; margin-bottom: 6px; }
+
+.danger { background: #a33; color: #fff; }
+.danger:hover { background: #c44; }
+
+h3.sub { font-size: 12.5px; color: var(--tx3); font-weight: 600; margin: 16px 0 9px; }
+
+/* ───────── الأدوات والطلبات ───────── */
+
+.toollist { display: flex; flex-direction: column; gap: 7px; }
+.tool {
+  background: var(--bg); border: 1px solid var(--line);
+  border-radius: 8px; padding: 8px 11px;
+}
+.tool code { color: var(--acc); font-size: 12.5px; font-family: ui-monospace, monospace; }
+.tool p { font-size: 12.5px; color: var(--tx3); margin-top: 2px; }
+
+.orders { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 7px; }
+.order {
+  background: var(--bg); border: 1px solid var(--line);
+  border-radius: 8px; padding: 8px 10px; font-size: 12.5px;
+}
+.order b { color: var(--acc); font-family: ui-monospace, monospace; font-size: 14px; }
+.order span { display: block; color: var(--tx3); margin-top: 2px; }
+
+/* ───────── بطاقة المكالمة ───────── */
+
+.callcard { display: flex; flex-direction: column; }
+.callhead {
+  display: flex; align-items: center; gap: 14px;
+  padding-bottom: 14px; margin-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.callhead h2 { margin: 0; font-size: 15px; }
+.callhead > div:nth-child(2) { flex: 1; }
+
+.orb {
+  width: 46px; height: 46px; border-radius: 99px; flex: none;
+  display: grid; place-items: center;
+  background: var(--bg); border: 1px solid var(--line2);
+  transition: .25s;
+}
+.orb span {
+  width: 14px; height: 14px; border-radius: 99px;
+  background: var(--tx3); transition: .25s;
+}
+.orb.listening { border-color: var(--ok); box-shadow: 0 0 0 5px rgba(63,191,127,.12); }
+.orb.listening span { background: var(--ok); animation: pulse 1.5s ease-in-out infinite; }
+.orb.speaking { border-color: var(--acc); box-shadow: 0 0 0 5px rgba(77,163,255,.14); }
+.orb.speaking span { background: var(--acc); animation: pulse .55s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.7); opacity: .55; } }
+
+.timer { font-family: ui-monospace, monospace; font-size: 17px; color: var(--tx2); }
+
+.chat {
+  flex: 1; min-height: 330px; max-height: 460px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 9px;
+  padding-left: 4px;
+}
+.msg { max-width: 84%; padding: 9px 13px; border-radius: 12px; font-size: 14.5px; line-height: 1.8; }
+.msg.agent { background: rgba(77,163,255,.11); border: 1px solid rgba(77,163,255,.25); align-self: flex-start; border-bottom-right-radius: 4px; }
+.msg.user  { background: var(--bg); border: 1px solid var(--line2); align-self: flex-end; border-bottom-left-radius: 4px; }
+.msg .who { display: block; font-size: 10.5px; color: var(--tx3); margin-bottom: 3px; font-weight: 600; }
+
+.event {
+  align-self: center; font-size: 11.5px; color: var(--tx3);
+  background: var(--bg); border: 1px dashed var(--line2);
+  border-radius: 99px; padding: 4px 13px;
+}
+.event.call { color: var(--acc); border-color: rgba(77,163,255,.4); }
+.event.warn { color: var(--warn); border-color: rgba(240,180,41,.4); }
+
+/* ───────── الملخّص ───────── */
+
+.summary { display: flex; flex-direction: column; gap: 8px; }
+.sumrow {
+  display: flex; gap: 10px; align-items: baseline;
+  background: var(--bg); border: 1px solid var(--line);
+  border-radius: 8px; padding: 9px 12px; font-size: 13.5px;
+}
+.sumrow b { color: var(--tx3); font-size: 11.5px; font-weight: 600; min-width: 74px; }
+.sumrow.alert { border-color: rgba(240,180,41,.4); background: rgba(240,180,41,.08); }
+
+/* ───────── تبديل الوضع ───────── */
+
+.modes { display: flex; gap: 7px; margin-bottom: 16px; }
+.mode {
+  flex: 1; background: var(--bg); color: var(--tx2);
+  border: 1px solid var(--line2); font-size: 13px; padding: 9px;
+}
+.mode.on { background: rgba(77,163,255,.14); border-color: var(--acc); color: var(--acc); }
+
+/* ───────── صندوق المكالمات ───────── */
+
+.history .hitem { border-right: 3px solid var(--line2); }
+.hitem.urgent { border-right-color: var(--bad); background: rgba(242,109,109,.06); }
+.hitem.done { opacity: .5; }
+
+.hrow { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 3px; }
+.hrow b { font-size: 14px; }
+
+.tag {
+  font-size: 10.5px; padding: 2px 8px; border-radius: 99px;
+  background: var(--card); border: 1px solid var(--line2); color: var(--tx3);
+}
+.tag.hot { border-color: var(--bad); color: var(--bad); background: rgba(242,109,109,.1); }
+
+.meta .num { font-family: ui-monospace, monospace; color: var(--acc); }
+
+.hactions { display: flex; gap: 6px; margin-top: 8px; }
+.hactions button { padding: 4px 11px; font-size: 11.5px; }

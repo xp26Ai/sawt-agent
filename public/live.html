@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>صوت — المكالمة الحيّة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="live.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">◉</span>
+    <div>
+      <h1>المكالمة الحيّة</h1>
+      <p>يرد على المكالمة وأنت مشغول، يعرف وش يبي المتصل، ويرسل لك الملخّص</p>
+    </div>
+  </div>
+  <div class="row">
+    <span id="statePill" class="pill">غير متصل</span>
+    <a href="/" class="ghost sm" style="text-decoration:none;padding:7px 13px;border-radius:9px;border:1px solid var(--line2)">الرسائل الصوتية ←</a>
+  </div>
+</header>
+
+<main class="grid live-grid">
+
+  <!-- ═══════ الإعداد ═══════ -->
+  <section class="col">
+    <div class="card">
+      <div class="modes">
+        <button class="mode on" data-mode="secretary">سكرتيري — يرد وأنا مشغول</button>
+        <button class="mode" data-mode="support">خدمة عملاء</button>
+      </div>
+
+      <!-- ═══ وضع السكرتير ═══ -->
+      <div id="secretaryFields">
+        <div class="fields">
+          <label><span>اسمك (صاحب الجوال)</span><input id="ownerName" value="صاحب الجوال"></label>
+          <label><span>اسم المساعد</span><input id="secretaryName" value="مساعد"></label>
+          <label><span>حالتك الآن</span>
+            <select id="status">
+              <option value="مشغول في اجتماع الآن">في اجتماع</option>
+              <option value="مشغول ولا يقدر يرد الآن">مشغول</option>
+              <option value="يقود سيارته الآن">أقود</option>
+              <option value="خارج أوقات العمل">خارج الدوام</option>
+            </select>
+          </label>
+          <label><span>اللهجة</span>
+            <select id="dialect2">
+              <option value="najdi">سعودية بيضاء</option>
+              <option value="khaleeji">خليجية</option>
+              <option value="msa">فصحى مبسّطة</option>
+            </select>
+          </label>
+        </div>
+        <label class="block"><span>لو سأل المتصل "متى يرجع؟" — وش يقول له</span>
+          <input id="freeAfter" value="راح يرجع بعد الساعة خمسة إن شاء الله"></label>
+        <label class="block"><span>ملاحظات إضافية للمساعد (اختياري)</span>
+          <textarea id="notes" rows="3">لو المتصل من شركة تسويق، اعتذر بأدب واختم بسرعة.
+لو الموضوع فلوس أو عقد، اسأله عن المبلغ والجهة.</textarea>
+        </label>
+      </div>
+
+      <!-- ═══ وضع خدمة العملاء ═══ -->
+      <div id="supportFields" class="hidden">
+        <div class="fields">
+          <label><span>اسم الوكيل</span><input id="agentName" value="سند"></label>
+          <label><span>الشركة</span><input id="company" value="شركة سند للتوصيل"></label>
+          <label><span>اللهجة</span>
+            <select id="dialect">
+              <option value="najdi">سعودية بيضاء</option>
+              <option value="khaleeji">خليجية</option>
+              <option value="msa">فصحى مبسّطة</option>
+            </select>
+          </label>
+        </div>
+        <label class="block"><span>معلومات الشركة (يعتمد عليها ولا يخرج عنها)</span>
+          <textarea id="knowledge" rows="4">أوقات العمل: من التاسعة صباحاً إلى التاسعة مساءً، طوال الأسبوع.
+الشحن داخل الرياض يصل خلال يومين، وباقي المدن ثلاثة إلى خمسة أيام.
+الاسترجاع متاح خلال أربعة عشر يوماً من الاستلام، بشرط أن المنتج ما استُخدم.
+رسوم التوصيل خمسة عشر ريالاً، ومجاني للطلبات فوق مئتي ريال.</textarea>
+        </label>
+      </div>
+
+      <div class="fields" style="margin-top:13px">
+        <label><span>الصوت</span><select id="voice"></select></label>
+        <label><span>النموذج</span><select id="model"></select></label>
+      </div>
+      <div class="row" style="gap:10px;margin-top:14px">
+        <button id="callBtn" class="primary big">ابدأ المكالمة</button>
+        <button id="hangBtn" class="danger big hidden">أنهِ المكالمة</button>
+      </div>
+      <div id="err" class="err hidden"></div>
+    </div>
+
+    <div class="card">
+      <h2>أدوات الوكيل — يستدعيها بنفسه</h2>
+      <div id="tools" class="toollist"></div>
+      <div id="ordersBox" class="hidden">
+        <h3 class="sub">طلبات تجريبية — جرّب تسأله عنها</h3>
+        <div id="orders" class="orders"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ المكالمة ═══════ -->
+  <section class="col">
+    <div class="card callcard">
+      <div class="callhead">
+        <div id="orb" class="orb"><span></span></div>
+        <div>
+          <h2 id="orbLabel">جاهز</h2>
+          <p class="hint" id="orbSub">اضغط "ابدأ المكالمة" وتكلّم بصوتك</p>
+        </div>
+        <div class="timer" id="timer">00:00</div>
+      </div>
+      <div id="chat" class="chat">
+        <div class="empty">ما بدأت مكالمة بعد.<br>يحتاج إذن الميكروفون.</div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <input id="typed" placeholder="أو اكتب بدل ما تتكلم…" disabled>
+        <button id="sendTyped" class="ghost sm" disabled>أرسل</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>ملخّص المكالمة</h2>
+      <div id="summary" class="summary"><div class="empty">يظهر لما الوكيل يفهم طلبك</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>صندوق المكالمات</h2>
+        <span id="inboxStats" class="hint"></span>
+      </div>
+      <div id="calls" class="history"></div>
+    </div>
+  </section>
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="live.js"></script>
+</body>
+</html>

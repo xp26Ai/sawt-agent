@@ -1,0 +1,54 @@
+# ═══ أسرار — لا تُرفع أبداً ═══
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*token*.txt
+api-token
+
+# ═══ بيانات المتصلين والعملاء (SQLite) ═══
+# جداول calls و contacts تحفظ أرقام جوال، أسماء، نصوص مكالمات، ومعرّفات تيليجرام
+data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# ═══ صوت مولَّد ومسجَّل ═══
+# ملفات wav/ogg هنا فيها كلام مكالمات اختبار حقيقية
+audio/
+*.wav
+*.ogg
+*.mp3
+*.ulaw
+*.pcm
+tmp/
+
+# ═══ اعتماديات وبناء ═══
+node_modules/
+npm-debug.log*
+*.log
+logs/
+
+# ═══ أدوات الوكلاء والجلسات المحلية ═══
+.acp-*
+.acp-sessions/
+.acp-images/
+.acp-lessons.md
+.acp-fingerprint.json
+.antigravity/
+
+# ═══ نُسخ احتياطية ونسخ عمل ═══
+backup_*/
+*.bak
+* - Copy.*
+*copy*.js
+
+# ═══ نظام التشغيل والمحرّر ═══
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/

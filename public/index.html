@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>صوت — وكيل خدمة العملاء الصوتي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">◉</span>
+    <div>
+      <h1>صوت</h1>
+      <p>وكيل خدمة العملاء الصوتي — عربي واضح المخارج</p>
+    </div>
+  </div>
+  <div class="row">
+    <a href="/live.html" class="ghost sm" style="text-decoration:none;padding:7px 13px;border-radius:9px;border:1px solid var(--line2);color:var(--acc)">← المكالمة الحيّة</a>
+    <div id="health" class="health"></div>
+  </div>
+</header>
+
+<div id="quietBanner" class="banner hidden"></div>
+
+<main class="grid">
+
+  <!-- ═══════════ العمود الأيمن: الإنشاء ═══════════ -->
+  <section class="col main">
+
+    <div class="card">
+      <div class="card-head">
+        <h2>١ · الرسالة</h2>
+        <select id="templateSel" class="mini">
+          <option value="">— قالب جاهز —</option>
+        </select>
+      </div>
+      <textarea id="text" rows="5" placeholder="اكتب الرسالة هنا…&#10;مثال: عزيزي العميل، تم استلام طلبك رقم 8472 وسيصلك خلال 3 أيام عمل."></textarea>
+      <div class="row between">
+        <span class="hint" id="charCount">0 حرف</span>
+        <button id="clearBtn" class="ghost sm">مسح</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>٢ · الصوت والنطق</h2>
+
+      <div class="fields">
+        <label>
+          <span>الصوت</span>
+          <div class="row">
+            <select id="voice"></select>
+            <button id="auditionBtn" class="ghost sm" title="استمع لعيّنة فيها الحروف الصعبة">استمع</button>
+          </div>
+        </label>
+
+        <label>
+          <span>النبرة</span>
+          <select id="tone"></select>
+        </label>
+
+        <label>
+          <span>السرعة</span>
+          <select id="pace"></select>
+        </label>
+
+        <label>
+          <span>اللهجة</span>
+          <select id="dialect">
+            <option value="msa">فصحى حديثة</option>
+            <option value="najdi">سعودية بيضاء</option>
+          </select>
+        </label>
+
+        <label>
+          <span>الأرقام</span>
+          <select id="numbers">
+            <option value="smart">ذكي (يفرّق بين المرجعي والكمّي)</option>
+            <option value="words">تفقيط دائماً (ألف وأربعمئة)</option>
+            <option value="digits">رقماً رقماً (واحد، أربعة، أربعة)</option>
+            <option value="off">اتركها كما هي</option>
+          </select>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" id="tashkeel" checked>
+          <span>التشكيل الكامل <em>— أهم عامل لوضوح المخارج</em></span>
+        </label>
+      </div>
+
+      <button id="previewBtn" class="primary big">توليد الصوت ومعاينته</button>
+      <div id="previewErr" class="err hidden"></div>
+    </div>
+
+    <div class="card hidden" id="resultCard">
+      <h2>٣ · النتيجة</h2>
+      <audio id="player" controls></audio>
+      <div class="metrics" id="metrics"></div>
+
+      <details class="stages" id="stagesBox" open>
+        <summary>مراحل التجهيز — شوف بالضبط وش راح يُنطق</summary>
+        <div id="stages"></div>
+      </details>
+    </div>
+
+  </section>
+
+  <!-- ═══════════ العمود الأيسر: الإرسال ═══════════ -->
+  <aside class="col side">
+
+    <div class="card">
+      <div class="card-head">
+        <h2>المستقبِلون</h2>
+        <button id="discoverBtn" class="ghost sm" title="يجيب كل من راسل البوت">اكتشاف</button>
+      </div>
+      <div id="contacts" class="contacts"></div>
+      <div class="row add">
+        <input id="cName" placeholder="الاسم">
+        <input id="cAddr" placeholder="chat_id أو رقم">
+        <select id="cChan" class="mini">
+          <option value="telegram">تيليجرام</option>
+          <option value="whatsapp">واتساب</option>
+        </select>
+        <button id="addContact" class="ghost sm">+</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>الإرسال</h2>
+      <input id="caption" placeholder="نص مرافق (اختياري)">
+      <button id="sendBtn" class="primary big" disabled>أرسل الرسالة الصوتية</button>
+      <p class="hint" id="sendHint">ولّد معاينة أولاً</p>
+      <div id="sendResult"></div>
+    </div>
+
+    <div class="card">
+      <h2>السجل</h2>
+      <div id="history" class="history"></div>
+    </div>
+
+  </aside>
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
